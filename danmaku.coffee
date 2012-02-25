@@ -24,16 +24,29 @@ class DanmakuGame extends Game
   onenterframe : ->
     @nbullet() if @nbullet isnt null and @nbullet isnt undefined
     if @frame % 180 is 0
+      # 撃ち下ろし、N連射
       ###
       @nbullet = @nBullet =>
         bullet = new Bullet @enemy.x, @enemy.y, @assets["./image/icon0.gif"], 45
         @danmakuScene.addChild bullet
       ###
+      
+      # 自機狙い、N連射
+      ###
       @nbullet = @nBullet =>
         bullet = new AimBullet @enemy.x, @enemy.y, @player.x, @player.y, @assets["./image/icon0.gif"], 45
         @danmakuScene.addChild bullet
+      ###
+
+      # 固定自機狙い、N連射
+      @nbullet = @fixedAimNBullet()
+
+      # 単発撃ち下ろし
       #bullet = new Bullet @enemy.x, @enemy.y, @assets["./image/icon0.gif"], 45
+      
+      # 単発自機狙い
       #bullet = new AimBullet @enemy.x, @enemy.y, @player.x, @player.y, @assets["./image/icon0.gif"], 45
+      
       #@danmakuScene.addChild bullet
 
   nBullet : (bulletKindCallback, n = 5, interval = 10) ->
@@ -46,7 +59,16 @@ class DanmakuGame extends Game
           diffInterval = interval
       else
         --diffInterval
-        
+
+  # 初弾のみ自機狙い。後はぜんぶ初弾と同じ場所を狙う
+  fixedAimNBullet : (n = 5, interval = 10) ->
+    dx = @player.x
+    dy = @player.y
+    nbullet = @nBullet =>
+      bullet = new AimBullet @enemy.x, @enemy.y, dx, dy, @assets["./image/icon0.gif"], 45
+      @danmakuScene.addChild bullet
+    return nbullet
+      
   setPlayer : ->
     @player = new Player @assets["./image/chara0.gif"]
     @player.frame = 7
