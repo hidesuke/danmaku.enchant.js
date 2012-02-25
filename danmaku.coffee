@@ -1,6 +1,7 @@
-# -----------------
+# ----------------------------
+# danmaku.enchant.js
 # enchant.js で弾幕書くよ
-# -----------------
+# ----------------------------
 
 enchant()
 
@@ -9,7 +10,9 @@ class DanmakuGame extends Game
     super 512, 512
     @fps = 60
     # preloadする素材まわりはこのへんに書いておく
-    @preload("./image/chara0.gif")
+    @preload "./image/chara0.gif",
+      "./image/icon0.gif",
+      "./image/effect0.gif"
   
   onload : ->
     label = new Label "東方発火損"
@@ -31,6 +34,9 @@ class DanmakuGame extends Game
     @rootScene.addEventListener "rightbuttondown", ->
       player.x += 4
     @rootScene.addChild player
+    bullet = new Bullet enemy.x, enemy.y, @assets["./image/icon0.gif"], 45
+    bullet.setAcceleration 5
+    @rootScene.addChild bullet
     @drawGrid()
     return
 
@@ -48,7 +54,6 @@ class DanmakuGame extends Game
     line.backgroundColor = "black"
     @rootScene.addChild line
 
-
 class BodyBase extends Sprite
   x : 0
   y : 0
@@ -62,9 +67,6 @@ class BodyBase extends Sprite
 class Player extends BodyBase
   constructor : (image) ->
     super 32, 32, 256, 400, image
-
-  leftbuttondown : ->
-    @x -= 2
 
 class Enemy extends BodyBase
   goingDown : true
@@ -87,10 +89,5 @@ class Enemy extends BodyBase
       else
         @goingDown = true
         @y++
-
-class Bullet extends Sprite
-
-
-
 
 
