@@ -14,32 +14,55 @@ DanmakuGame = (function() {
   }
 
   DanmakuGame.prototype.onload = function() {
-    var enemy, label, player;
+    this.danmakuScene = new Scene();
+    this.pushScene(this.danmakuScene);
+    this.makeStage();
+    this.setPlayer();
+    return this.setEnemy();
+  };
+
+  DanmakuGame.prototype.onenterframe = function() {
+    var bullet;
+    if (this.frame % 180 === 0) {
+      bullet = new AimBullet(this.enemy.x, this.enemy.y, this.player.x, this.player.y, this.assets["./image/icon0.gif"], 45);
+      return this.danmakuScene.addChild(bullet);
+    }
+  };
+
+  DanmakuGame.prototype.setPlayer = function() {
+    var _this = this;
+    this.player = new Player(this.assets["./image/chara0.gif"]);
+    this.player.frame = 7;
+    this.danmakuScene.addEventListener("upbuttondown", function() {
+      return _this.player.y -= 4;
+    });
+    this.danmakuScene.addEventListener("downbuttondown", function() {
+      return _this.player.y += 4;
+    });
+    this.danmakuScene.addEventListener("leftbuttondown", function() {
+      return _this.player.x -= 4;
+    });
+    this.danmakuScene.addEventListener("rightbuttondown", function() {
+      return _this.player.x += 4;
+    });
+    return this.danmakuScene.addChild(this.player);
+  };
+
+  DanmakuGame.prototype.setEnemy = function() {
+    this.enemy = new Enemy(this.assets["./image/chara0.gif"]);
+    this.enemy.frame = 0;
+    this.enemy.setBulletImage(this.assets["./image/icon0.gif"]);
+    return this.danmakuScene.addChild(this.enemy);
+  };
+
+  DanmakuGame.prototype.makeStage = function() {
+    var label;
     label = new Label("東方発火損");
     label.font = "28px 'osaka-mono'";
     label.width = 512;
     label.backgroundColor = "red";
-    this.rootScene.addChild(label);
-    enemy = new Enemy(this.assets["./image/chara0.gif"]);
-    enemy.frame = 0;
-    enemy.setBulletImage(this.assets["./image/icon0.gif"]);
-    this.rootScene.addChild(enemy);
-    player = new Player(this.assets["./image/chara0.gif"]);
-    player.frame = 7;
-    this.rootScene.addEventListener("upbuttondown", function() {
-      return player.y -= 4;
-    });
-    this.rootScene.addEventListener("downbuttondown", function() {
-      return player.y += 4;
-    });
-    this.rootScene.addEventListener("leftbuttondown", function() {
-      return player.x -= 4;
-    });
-    this.rootScene.addEventListener("rightbuttondown", function() {
-      return player.x += 4;
-    });
-    this.rootScene.addChild(player);
-    this.drawGrid();
+    this.danmakuScene.addChild(label);
+    return this.drawGrid();
   };
 
   DanmakuGame.prototype.drawGrid = function() {
@@ -60,7 +83,7 @@ DanmakuGame = (function() {
     line.width = w;
     line.height = h;
     line.backgroundColor = "black";
-    return this.rootScene.addChild(line);
+    return this.danmakuScene.addChild(line);
   };
 
   return DanmakuGame;
@@ -112,13 +135,7 @@ Enemy = (function() {
   }
 
   Enemy.prototype.onenterframe = function() {
-    var bullet;
-    this.frameCount++;
-    this.move();
-    if (this.frameCount % 60 === 0) {
-      bullet = new Bullet(this.x, this.y, this.bulletImage, 45);
-      return this.scene.addChild(bullet);
-    }
+    return this.move();
   };
 
   Enemy.prototype.setBulletImage = function(image) {

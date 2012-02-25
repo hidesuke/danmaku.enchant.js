@@ -3,9 +3,10 @@
 # 弾に関することを記述するよ
 # --------------------------------
 
+# -------------------------
+# 基本の打ちおろし弾
+# -------------------------
 class Bullet extends Sprite
-  frameCount : 0
-
   constructor : (x, y, image, frame) ->
     super 16, 16
     @image = image
@@ -29,15 +30,33 @@ class Bullet extends Sprite
     # Bulletの子クラスは
     # これをオーバーライドすればいいんじゃない？
     @speed = 5
+    @y += @speed
     return
 
-  onenterframe : (callback) ->
-    @frameCount++
+  checkRange : ->
     @scene.removeChild @ unless -16 <= @x <= 528
     @scene.removeChild @ unless -16 <= @y <= 528
+
+  onenterframe : (callback) ->
+    @checkRange()
     @behaviorFunction()
-    @y += @speed
 
 
+# -----------------------
+# 自機狙い
+# -----------------------
+class AimBullet extends Bullet
+  constructor : (x, y, dx, dy, image, frame) ->
+    super x, y, image, frame
+    @dx = dx
+    @dy = dy
+    @acc = 0
+    @speed = 5
+    rate = @speed / Math.sqrt( (x - dx) * (x - dx) + (y - dy) * (y - dy) )
+    @deltaX = (dx - x) * rate
+    @deltaY = (dy - y) * rate
 
+  behaviorFunction : () ->
+    @x += @deltaX
+    @y += @deltaY
 

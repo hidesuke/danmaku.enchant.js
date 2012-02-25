@@ -15,28 +15,44 @@ class DanmakuGame extends Game
       "./image/effect0.gif"
   
   onload : ->
+    @danmakuScene = new Scene()
+    @pushScene @danmakuScene
+    @makeStage()
+    @setPlayer()
+    @setEnemy()
+
+  onenterframe : ->
+    if @frame % 180 is 0
+      #bullet = new Bullet @enemy.x, @enemy.y, @assets["./image/icon0.gif"], 45
+      bullet = new AimBullet @enemy.x, @enemy.y, @player.x, @player.y, @assets["./image/icon0.gif"], 45
+      @danmakuScene.addChild bullet
+
+  setPlayer : ->
+    @player = new Player @assets["./image/chara0.gif"]
+    @player.frame = 7
+    @danmakuScene.addEventListener "upbuttondown", =>
+      @player.y -= 4
+    @danmakuScene.addEventListener "downbuttondown", =>
+      @player.y += 4
+    @danmakuScene.addEventListener "leftbuttondown", =>
+      @player.x -= 4
+    @danmakuScene.addEventListener "rightbuttondown", =>
+      @player.x += 4
+    @danmakuScene.addChild @player
+
+  setEnemy : ->
+    @enemy = new Enemy @assets["./image/chara0.gif"]
+    @enemy.frame = 0
+    @enemy.setBulletImage @assets["./image/icon0.gif"]
+    @danmakuScene.addChild @enemy
+
+  makeStage : () ->
     label = new Label "東方発火損"
     label.font = "28px 'osaka-mono'"
     label.width = 512
     label.backgroundColor = "red"
-    @rootScene.addChild label
-    enemy = new Enemy @assets["./image/chara0.gif"]
-    enemy.frame = 0
-    enemy.setBulletImage @assets["./image/icon0.gif"]
-    @rootScene.addChild enemy
-    player = new Player @assets["./image/chara0.gif"]
-    player.frame = 7
-    @rootScene.addEventListener "upbuttondown", ->
-      player.y -= 4
-    @rootScene.addEventListener "downbuttondown", ->
-      player.y += 4
-    @rootScene.addEventListener "leftbuttondown", ->
-      player.x -= 4
-    @rootScene.addEventListener "rightbuttondown", ->
-      player.x += 4
-    @rootScene.addChild player
+    @danmakuScene.addChild label
     @drawGrid()
-    return
 
   drawGrid : ->
     for i in [0..8]
@@ -50,7 +66,7 @@ class DanmakuGame extends Game
     line.width = w
     line.height = h
     line.backgroundColor = "black"
-    @rootScene.addChild line
+    @danmakuScene.addChild line
 
 class BodyBase extends Sprite
   x : 0
@@ -73,11 +89,7 @@ class Enemy extends BodyBase
     super 32, 32, 256, 0, image
 
   onenterframe : () ->
-    @frameCount++
     @move()
-    if @frameCount % 60 is 0
-      bullet = new Bullet @x, @y, @bulletImage, 45
-      @scene.addChild bullet
 
   setBulletImage : (image) ->
     @bulletImage = image
