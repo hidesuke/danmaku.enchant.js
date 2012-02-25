@@ -15,10 +15,6 @@ class Bullet extends Sprite
     @y = y
     @scale 1.5, 1.5
 
-  setDirection : (dx, dy) ->
-    @dx = dx
-    @dy = dy
-
   setAcceleration : (acc) ->
     @acc = acc
 
@@ -36,11 +32,12 @@ class Bullet extends Sprite
   checkRange : ->
     @scene.removeChild @ unless -16 <= @x <= 528
     @scene.removeChild @ unless -16 <= @y <= 528
+    return
 
   onenterframe : (callback) ->
     @checkRange()
     @behaviorFunction()
-
+    return
 
 # -----------------------
 # 自機狙い
@@ -60,5 +57,3 @@ class AimBullet extends Bullet
     @x += @deltaX
     @y += @deltaY
     
-
-

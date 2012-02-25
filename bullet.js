@@ -14,11 +14,6 @@ Bullet = (function() {
     this.scale(1.5, 1.5);
   }
 
-  Bullet.prototype.setDirection = function(dx, dy) {
-    this.dx = dx;
-    return this.dy = dy;
-  };
-
   Bullet.prototype.setAcceleration = function(acc) {
     return this.acc = acc;
   };
@@ -35,14 +30,12 @@ Bullet = (function() {
   Bullet.prototype.checkRange = function() {
     var _ref, _ref2;
     if (!((-16 <= (_ref = this.x) && _ref <= 528))) this.scene.removeChild(this);
-    if (!((-16 <= (_ref2 = this.y) && _ref2 <= 528))) {
-      return this.scene.removeChild(this);
-    }
+    if (!((-16 <= (_ref2 = this.y) && _ref2 <= 528))) this.scene.removeChild(this);
   };
 
   Bullet.prototype.onenterframe = function(callback) {
     this.checkRange();
-    return this.behaviorFunction();
+    this.behaviorFunction();
   };
 
   return Bullet;
