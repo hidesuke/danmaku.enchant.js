@@ -22,22 +22,32 @@ DanmakuGame = (function() {
   };
 
   DanmakuGame.prototype.onenterframe = function() {
+    var _this = this;
     if (this.nbullet !== null && this.nbullet !== void 0) this.nbullet();
-    if (this.frame % 180 === 0) return this.nbullet = this.nBullet();
+    if (this.frame % 180 === 0) {
+      /*
+            @nbullet = @nBullet =>
+              bullet = new Bullet @enemy.x, @enemy.y, @assets["./image/icon0.gif"], 45
+              @danmakuScene.addChild bullet
+      */
+      return this.nbullet = this.nBullet(function() {
+        var bullet;
+        bullet = new AimBullet(_this.enemy.x, _this.enemy.y, _this.player.x, _this.player.y, _this.assets["./image/icon0.gif"], 45);
+        return _this.danmakuScene.addChild(bullet);
+      });
+    }
   };
 
-  DanmakuGame.prototype.nBullet = function() {
+  DanmakuGame.prototype.nBullet = function(bulletKindCallback) {
     var diffInterval, interval, n;
     var _this = this;
     n = 5;
     interval = 10;
     diffInterval = 0;
     return function() {
-      var bullet;
       if (diffInterval < 0) {
         if (n > 0) {
-          bullet = new Bullet(_this.enemy.x, _this.enemy.y, _this.assets["./image/icon0.gif"], 45);
-          _this.danmakuScene.addChild(bullet);
+          bulletKindCallback();
           n--;
           return diffInterval = interval;
         }
