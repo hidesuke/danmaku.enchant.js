@@ -36,9 +36,7 @@ class DanmakuGame extends Game
       #bullet = new AimBullet @enemy.x, @enemy.y, @player.x, @player.y, @assets["./image/icon0.gif"], 45
       #@danmakuScene.addChild bullet
 
-  nBullet : (bulletKindCallback) ->
-    n = 5
-    interval =10
+  nBullet : (bulletKindCallback, n = 5, interval = 10) ->
     diffInterval = 0
     return =>
       if diffInterval < 0

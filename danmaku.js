@@ -38,11 +38,11 @@ DanmakuGame = (function() {
     }
   };
 
-  DanmakuGame.prototype.nBullet = function(bulletKindCallback) {
-    var diffInterval, interval, n;
+  DanmakuGame.prototype.nBullet = function(bulletKindCallback, n, interval) {
+    var diffInterval;
     var _this = this;
-    n = 5;
-    interval = 10;
+    if (n == null) n = 5;
+    if (interval == null) interval = 10;
     diffInterval = 0;
     return function() {
       if (diffInterval < 0) {
