@@ -22,11 +22,27 @@ class DanmakuGame extends Game
     @setEnemy()
 
   onenterframe : ->
+    @nbullet() if @nbullet isnt null and @nbullet isnt undefined
     if @frame % 180 is 0
+      @nbullet = @nBullet()
       #bullet = new Bullet @enemy.x, @enemy.y, @assets["./image/icon0.gif"], 45
-      bullet = new AimBullet @enemy.x, @enemy.y, @player.x, @player.y, @assets["./image/icon0.gif"], 45
-      @danmakuScene.addChild bullet
+      #bullet = new AimBullet @enemy.x, @enemy.y, @player.x, @player.y, @assets["./image/icon0.gif"], 45
+      #@danmakuScene.addChild bullet
 
+  nBullet : ->
+    n = 5
+    interval =10
+    diffInterval = 0
+    return =>
+      if diffInterval < 0
+        if n > 0
+          bullet = new Bullet @enemy.x, @enemy.y, @assets["./image/icon0.gif"], 45
+          @danmakuScene.addChild bullet
+          n--
+          diffInterval = interval
+      else
+        --diffInterval
+        
   setPlayer : ->
     @player = new Player @assets["./image/chara0.gif"]
     @player.frame = 7

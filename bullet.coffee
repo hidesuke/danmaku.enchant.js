@@ -59,4 +59,6 @@ class AimBullet extends Bullet
   behaviorFunction : () ->
     @x += @deltaX
     @y += @deltaY
+    
+
 
