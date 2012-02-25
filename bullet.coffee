@@ -4,7 +4,7 @@
 # --------------------------------
 
 class Bullet extends Sprite
-  currentFrame : 0
+  frameCount : 0
 
   constructor : (x, y, image, frame) ->
     super 16, 16
@@ -13,7 +13,6 @@ class Bullet extends Sprite
     @x = x
     @y = y
     @scale 1.5, 1.5
-    @speed = 3
 
   setDirection : (dx, dy) ->
     @dx = dx
@@ -29,12 +28,14 @@ class Bullet extends Sprite
     # 動きを定義する関数
     # Bulletの子クラスは
     # これをオーバーライドすればいいんじゃない？
+    @speed = 5
     return
 
   onenterframe : (callback) ->
-    @currentFrame++
+    @frameCount++
     @scene.removeChild @ unless -16 <= @x <= 528
     @scene.removeChild @ unless -16 <= @y <= 528
+    @behaviorFunction()
     @y += @speed
 
 
