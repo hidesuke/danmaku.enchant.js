@@ -14,7 +14,7 @@ DanmakuGame = (function() {
   }
 
   DanmakuGame.prototype.onload = function() {
-    var bullet, enemy, label, player;
+    var enemy, label, player;
     label = new Label("東方発火損");
     label.font = "28px 'osaka-mono'";
     label.width = 512;
@@ -22,6 +22,7 @@ DanmakuGame = (function() {
     this.rootScene.addChild(label);
     enemy = new Enemy(this.assets["./image/chara0.gif"]);
     enemy.frame = 0;
+    enemy.setBulletImage(this.assets["./image/icon0.gif"]);
     this.rootScene.addChild(enemy);
     player = new Player(this.assets["./image/chara0.gif"]);
     player.frame = 7;
@@ -38,9 +39,6 @@ DanmakuGame = (function() {
       return player.x += 4;
     });
     this.rootScene.addChild(player);
-    bullet = new Bullet(enemy.x, enemy.y, this.assets["./image/icon0.gif"], 45);
-    bullet.setAcceleration(5);
-    this.rootScene.addChild(bullet);
     this.drawGrid();
   };
 
@@ -107,12 +105,24 @@ Enemy = (function() {
 
   Enemy.prototype.goingDown = true;
 
+  Enemy.prototype.frameCount = 0;
+
   function Enemy(image) {
     Enemy.__super__.constructor.call(this, 32, 32, 256, 0, image);
   }
 
   Enemy.prototype.onenterframe = function() {
-    return this.move();
+    var bullet;
+    this.frameCount++;
+    this.move();
+    if (this.frameCount % 60 === 0) {
+      bullet = new Bullet(this.x, this.y, this.bulletImage, 45);
+      return this.scene.addChild(bullet);
+    }
+  };
+
+  Enemy.prototype.setBulletImage = function(image) {
+    return this.bulletImage = image;
   };
 
   Enemy.prototype.move = function() {

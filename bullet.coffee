@@ -13,7 +13,7 @@ class Bullet extends Sprite
     @x = x
     @y = y
     @scale 1.5, 1.5
-    @speed = 5
+    @speed = 3
 
   setDirection : (dx, dy) ->
     @dx = dx
@@ -36,3 +36,7 @@ class Bullet extends Sprite
     @scene.removeChild @ unless -16 <= @x <= 528
     @scene.removeChild @ unless -16 <= @y <= 528
     @y += @speed
+
+
+
+

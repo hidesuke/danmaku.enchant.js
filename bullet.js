@@ -5,6 +5,8 @@ Bullet = (function() {
 
   __extends(Bullet, Sprite);
 
+  Bullet.prototype.currentFrame = 0;
+
   function Bullet(x, y, image, frame) {
     Bullet.__super__.constructor.call(this, 16, 16);
     this.image = image;
@@ -12,6 +14,7 @@ Bullet = (function() {
     this.x = x;
     this.y = y;
     this.scale(1.5, 1.5);
+    this.speed = 3;
   }
 
   Bullet.prototype.setDirection = function(dx, dy) {
@@ -23,13 +26,18 @@ Bullet = (function() {
     return this.acc = acc;
   };
 
+  Bullet.prototype.setSpeed = function(speed) {
+    return this.speed = speed;
+  };
+
   Bullet.prototype.behaviorFunction = function() {};
 
   Bullet.prototype.onenterframe = function(callback) {
     var _ref, _ref2;
-    if (!((0 <= (_ref = this.x) && _ref <= 512))) this.scene.removeChild(this);
-    if (!((0 <= (_ref2 = this.y) && _ref2 <= 512))) this.scene.removeChild(this);
-    return this.y += this.acc;
+    this.currentFrame++;
+    if (!((-16 <= (_ref = this.x) && _ref <= 528))) this.scene.removeChild(this);
+    if (!((-16 <= (_ref2 = this.y) && _ref2 <= 528))) this.scene.removeChild(this);
+    return this.y += this.speed;
   };
 
   return Bullet;

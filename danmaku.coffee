@@ -22,6 +22,7 @@ class DanmakuGame extends Game
     @rootScene.addChild label
     enemy = new Enemy @assets["./image/chara0.gif"]
     enemy.frame = 0
+    enemy.setBulletImage @assets["./image/icon0.gif"]
     @rootScene.addChild enemy
     player = new Player @assets["./image/chara0.gif"]
     player.frame = 7
@@ -34,9 +35,6 @@ class DanmakuGame extends Game
     @rootScene.addEventListener "rightbuttondown", ->
       player.x += 4
     @rootScene.addChild player
-    bullet = new Bullet enemy.x, enemy.y, @assets["./image/icon0.gif"], 45
-    bullet.setAcceleration 5
-    @rootScene.addChild bullet
     @drawGrid()
     return
 
@@ -70,11 +68,19 @@ class Player extends BodyBase
 
 class Enemy extends BodyBase
   goingDown : true
+  frameCount : 0
   constructor : (image) ->
     super 32, 32, 256, 0, image
 
   onenterframe : () ->
+    @frameCount++
     @move()
+    if @frameCount % 60 is 0
+      bullet = new Bullet @x, @y, @bulletImage, 45
+      @scene.addChild bullet
+
+  setBulletImage : (image) ->
+    @bulletImage = image
 
   move : () ->
     if @goingDown
