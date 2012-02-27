@@ -30,9 +30,12 @@ class Bullet extends Sprite
     return
 
   checkRange : ->
-    @scene.removeChild @ unless -16 <= @x <= 528
-    @scene.removeChild @ unless -16 <= @y <= 528
-    return
+    unless -16 <= @x <= 528
+      @scene.removeChild @
+      return
+    unless -16 <= @y <= 528
+      @scene.removeChild @
+      return
 
   onenterframe : (callback) ->
     @checkRange()
