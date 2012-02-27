@@ -13,8 +13,6 @@
 --------
 
 * git clone する
-* submoduleを使っているので http://d.hatena.ne.jp/mzp/20080508/git このへん参照で
-
 
 使い方
 -----
