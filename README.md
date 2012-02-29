@@ -6,6 +6,11 @@
 * シューティングゲームじゃなくて、あくまで弾幕なんだ！
 * (解説を書くことを) 強いられているんだ！
 
+DEMO
+=====
+
+* http://hidesuke.github.com/danmaku.enchant.js
+
 使い方
 ======
 
